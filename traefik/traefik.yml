@@ -1,0 +1,42 @@
+
+global:
+  checkNewVersion: true
+  sendAnonymousUsage: true
+
+entryPoints:
+  http:
+    address: :80
+    http:
+      redirections:
+        entryPoint:
+          to: https
+          scheme: https
+  https:
+    address: ":443"
+    http:
+      tls:
+        certResolver: letsEncrypt
+        domains:
+          - main: "*.driscoll.tech"
+            sans:
+              - "*.driscoll.tech"
+
+certificatesResolvers:
+  letsEncrypt:
+    driscolltech:
+      #caServer: "https://acme-v02.api.letsencrypt.org/directory"
+      caServer: "https://acme-staging-v02.api.letsencrypt.org/directory"
+      email: david.driscoll@gmail.com.com
+      storage: /driscolltech.json
+      dnsChallenge:
+        provider: cloudflare
+        delayBeforeCheck: 0
+        resolvers: 1.1.1.1:53,1.0.0.1:53
+
+api:
+  insecure: false
+  dashboard: true
+providers:
+  file:
+    directory: /etc/traefik/config
+    watch: true

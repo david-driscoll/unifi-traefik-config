@@ -1,0 +1,13 @@
+http:
+  routers:
+    portal:
+      rule: Host(`ombi.driscoll.com`)
+      service: ombi
+      tls:
+        certresolver: letsEncrypt
+  services:
+    ombi:
+      loadBalancer:
+        passHostHeader: true
+        servers:
+          - url: http://10.10.10.10:3579
